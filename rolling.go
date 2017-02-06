@@ -9,13 +9,33 @@ type Point struct {
 	Value int64
 }
 
+type Aggregator func(point []Point) Point
+
 // Got to be a better name than this.
 type Window struct {
-	x [][]Point
+	rows []row
+	aggregator Aggregator
 }
 
-func New(widths []int) *Window {
+type row struct {
+	points []Point
+	next int
+}
 
+func New(aggregator Aggregator, widths []int) *Window {
+	w := Window{
+		aggregator: aggregator,
+		rows: make([]row, len(widths)),
+	}
+	
+	for i := range widths {
+		if widths[i] <= 0 {
+			panic("Widths must be >= 0")
+		}
+		w.rows[i] = row{points:make([]Point, widths[i])}
+	}
+	
+	return &w
 }
 
 func (w *Window) Push(p Point) {
