@@ -64,8 +64,8 @@ func (w *Window) Flush(level int) {
 func (w *Window) Get(level int) []Point {
 	r := &w.rows[level]
 	ret := make([]Point, len(r.points))
-	n := copy(ret, r.points[:r.next+1])
-	copy(ret[n:], r.points[n:])
+	copy(ret, r.points[r.next:])
+	copy(ret[len(r.points)-r.next:], r.points)
 	return ret
 }
 
