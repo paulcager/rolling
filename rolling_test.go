@@ -7,23 +7,23 @@ import (
 
 func TestGet(t *testing.T) {
 	w := New(Max, 5, 10)
-	w.Push(Point{Value: 1})
-	w.Push(Point{Value: 2})
-	w.Push(Point{Value: 3})
+	w.PushPoint(Point{Value: 1})
+	w.PushPoint(Point{Value: 2})
+	w.PushPoint(Point{Value: 3})
 
 	testEquals(t, w, 0, []int64{0, 0, 1, 2, 3})
 
-	w.Push(Point{Value: 4})
+	w.PushPoint(Point{Value: 4})
 	testEquals(t, w, 0, []int64{0, 1, 2, 3, 4})
 
-	w.Push(Point{Value: 5})
+	w.PushPoint(Point{Value: 5})
 	testEquals(t, w, 0, []int64{1, 2, 3, 4, 5})
 
-	w.Push(Point{Value: 6})
+	w.PushPoint(Point{Value: 6})
 	testEquals(t, w, 0, []int64{2, 3, 4, 5, 6})
 
 	for i := 7; i < 12; i++ {
-		w.Push(Point{Value: int64(i)})
+		w.PushPoint(Point{Value: int64(i)})
 	}
 
 	testEquals(t, w, 0, []int64{7, 8, 9, 10, 11})

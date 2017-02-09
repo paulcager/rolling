@@ -40,7 +40,11 @@ func New(aggregator Aggregator, widths ...int) *Window {
 	return &w
 }
 
-func (w *Window) Push(p Point) {
+func (w *Window) Push(value int64) {
+	w.PushPoint(Point{time.Now(), value})
+}
+
+func (w *Window) PushPoint(p Point) {
 	for level := 0; level < len(w.rows); level++ {
 		r := &w.rows[level]
 		r.points[r.next] = p
@@ -57,7 +61,7 @@ func (w *Window) Flush(level int) {
 	r := &w.rows[level]
 	zero := Point{Time: time.Now()}
 	for r.next > 0 {
-		w.Push(zero)
+		w.PushPoint(zero)
 	}
 }
 
@@ -78,7 +82,7 @@ func (w *Window) Subscribe(level int) chan []Point {
 }
 
 func Max(points []Point) Point {
-	// Must be at least one element long.
+	// We know it is at least one element long.
 	max := points[0]
 	for i := 1; i < len(points); i++ {
 		if points[i].Value > max.Value {
