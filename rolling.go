@@ -93,6 +93,16 @@ func Max(points []Point) Point {
 	return max
 }
 
+func Avg(points []Point) Point {
+	if len(points) == 0 {
+		return Point{}
+	}
+	sum := Sum(points)
+	sum.Time = points[0].Time
+	sum.Value = sum.Value / int64(len(points))
+	return sum
+}
+
 func Sum(points []Point) Point {
 	sum := points[0]
 	for i := 1; i < len(points); i++ {
