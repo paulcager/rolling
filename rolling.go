@@ -5,13 +5,17 @@ import (
 	"time"
 )
 
+// A point is an int64 value at a certain time.
 type Point struct {
 	Time  time.Time
 	Value int64
 }
 
+// An Aggregator is a function that takes a slice of points and returns a single point, for example
+// Sum or Max.
 type Aggregator func(points []Point) Point
 
+// A Window is a rolling window over the data.
 // Got to be a better name than this.
 type Window struct {
 	rows       []row
@@ -24,6 +28,7 @@ type row struct {
 	next   int
 }
 
+// New creates a new Window. The
 func New(aggregator Aggregator, widths ...int) *Window {
 	w := Window{
 		aggregator: aggregator,
